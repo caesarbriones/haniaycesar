@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Paleta del universo Hannia & César */
+  --color-cream: #fff8f2;
+  --color-cream-deep: #ffeee2;
+  --color-blush: #ffd9e2;
+  --color-blush-deep: #ffb9cb;
+  --color-rose: #f2547b;
+  --color-rose-deep: #d63361;
+  --color-wine: #571c2e;
+  --color-wine-soft: #96603f;
+  --color-night: #1d1116;
+  --color-night-soft: #2b1a21;
+  --color-goo: #8ade5f;
+  --color-goo-deep: #57a838;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), Georgia, serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --animate-heartbeat: heartbeat 1.6s ease-in-out infinite;
+  --animate-float-y: float-y 6s ease-in-out infinite;
+  --animate-typing-dot: typing-dot 1.2s ease-in-out infinite;
+
+  @keyframes heartbeat {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    25% {
+      transform: scale(1.15);
+    }
+    45% {
+      transform: scale(0.95);
+    }
+    60% {
+      transform: scale(1.08);
+    }
+  }
+
+  @keyframes float-y {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+
+  @keyframes typing-dot {
+    0%,
+    60%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
+    30% {
+      transform: translateY(-4px);
+      opacity: 1;
+    }
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: clip;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-wine);
+}
+
+::selection {
+  background: var(--color-blush-deep);
+  color: var(--color-wine);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-rose);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Línea punteada animada del mapa (efecto "hormigas marchando") */
+@keyframes dash-march {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.map-dash {
+  animation: dash-march 1.2s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
