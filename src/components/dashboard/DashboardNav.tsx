@@ -51,9 +51,9 @@ export default function DashboardNav() {
 
       {/* Móvil */}
       <div className="fixed inset-x-3 bottom-3 z-40 md:hidden">
-        <ul className="flex items-center justify-between rounded-3xl border border-rose/20 bg-white/85 px-2 py-2 shadow-xl shadow-rose/20 backdrop-blur-md">
+        <ul className="flex min-w-0 items-center justify-start gap-1 overflow-x-auto rounded-3xl border border-rose/20 bg-white/85 px-2 py-2 shadow-xl shadow-rose/20 backdrop-blur-md [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {LINKS.map((link) => (
-            <li key={link.href}>
+            <li className="shrink-0" key={link.href}>
               <a
                 href={link.href}
                 aria-label={link.label}
