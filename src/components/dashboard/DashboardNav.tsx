@@ -11,6 +11,7 @@ const LINKS = [
   { href: "#fotos", emoji: "📸", label: "Fotos" },
   { href: "#carta", emoji: "💌", label: "Carta" },
   { href: "#playlist", emoji: "🎵", label: "Playlist" },
+  { href: "#cupones", emoji: "🎟️", label: "Cupones" },
   { href: "#gummigoo", img: "/gummigoo.jpeg", label: "Gummigoo" },
 ];
 

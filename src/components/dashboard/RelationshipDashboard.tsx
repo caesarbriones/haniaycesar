@@ -14,6 +14,7 @@ import Timeline from "./Timeline";
 import HanniaCollage from "./HanniaCollage";
 import LoveLetter from "./LoveLetter";
 import SectionHeading from "./SectionHeading";
+import CouponsRoulette from "./CouponsRoulette";
 import CesarComfortSection from "./CesarComfortSection";
 import GummigooFab from "@/components/cupid/GummigooFab";
 import GummigooChat from "@/components/cupid/GummigooChat";
@@ -116,6 +117,10 @@ export default function RelationshipDashboard() {
               className="block w-full rounded-2xl"
             />
           </div>
+        </section>
+
+        <section id="cupones" className="scroll-mt-28 py-14">
+          <CouponsRoulette />
         </section>
 
         <section id="animo" className="scroll-mt-28 py-14">
