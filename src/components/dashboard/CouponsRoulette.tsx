@@ -9,6 +9,7 @@ interface Coupon {
   category: string;
   emoji: string;
   title: string;
+  redeemed?: boolean;
 }
 
 const WHEEL_COLORS = [
@@ -51,7 +52,13 @@ const COUPONS: Coupon[] = [
   { id: "carino", category: "Cupones especiales", emoji: "🥺", title: "Cupón “Necesito cariño” — aparezco y te doy atención" },
   { id: "dia-horrible", category: "Cupones especiales", emoji: "😭", title: "Cupón “Tuve un día horrible” — llamada, escucha y mimos virtuales" },
   { id: "quedate", category: "Cupones especiales", emoji: "💤", title: "Cupón “Quédate conmigo” — nos quedamos en llamada aunque no hagamos nada" },
-  { id: "extrano", category: "Cupones especiales", emoji: "🫠", title: "Cupón “Extraño a mi novio” — recibes una dosis inmediata de amor" },
+  {
+    id: "extrano",
+    category: "Cupones especiales",
+    emoji: "🫠",
+    title: "Cupón “Extraño a mi novio” — recibes una dosis inmediata de amor",
+    redeemed: true,
+  },
   { id: "emergencia", category: "Cupones especiales", emoji: "❤️", title: "Cupón “Emergencia romántica” — te preparo algo sorpresa" },
   { id: "cita-legendaria", category: "Cupones legendarios", emoji: "💖", title: "Una cita virtual planeada completamente por mí" },
   { id: "cita-real", category: "Cupones legendarios", emoji: "✈️", title: "Canjeable por una cita real cuando por fin estemos juntos" },
@@ -61,8 +68,9 @@ const COUPONS: Coupon[] = [
 ];
 
 const CATEGORIES = [...new Set(COUPONS.map((coupon) => coupon.category))];
-const SEGMENT_ANGLE = 360 / COUPONS.length;
-const WHEEL_GRADIENT = `conic-gradient(${COUPONS.map((_, index) => {
+const AVAILABLE_COUPONS = COUPONS.filter((coupon) => !coupon.redeemed);
+const SEGMENT_ANGLE = 360 / AVAILABLE_COUPONS.length;
+const WHEEL_GRADIENT = `conic-gradient(${AVAILABLE_COUPONS.map((_, index) => {
   const start = index * SEGMENT_ANGLE;
   const end = (index + 1) * SEGMENT_ANGLE;
   return `${WHEEL_COLORS[index % WHEEL_COLORS.length]} ${start}deg ${end}deg`;
@@ -84,7 +92,7 @@ export default function CouponsRoulette() {
   function spinWheel() {
     if (isSpinning) return;
 
-    const nextIndex = Math.floor(Math.random() * COUPONS.length);
+    const nextIndex = Math.floor(Math.random() * AVAILABLE_COUPONS.length);
     const currentRotation = ((rotation % 360) + 360) % 360;
     const selectedCenterAngle = nextIndex * SEGMENT_ANGLE + SEGMENT_ANGLE / 2;
     const desiredRotation = (360 - selectedCenterAngle) % 360;
@@ -98,7 +106,7 @@ export default function CouponsRoulette() {
 
   function finishSpin() {
     if (!isSpinning || pendingIndex === null) return;
-    setSelected(COUPONS[pendingIndex]);
+    setSelected(AVAILABLE_COUPONS[pendingIndex]);
     setPendingIndex(null);
     setIsSpinning(false);
   }
@@ -121,7 +129,7 @@ export default function CouponsRoulette() {
         <div className="relative flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-cream">
           <div>
             <p className="text-xs font-bold tracking-[0.2em] text-[#ffd166] uppercase">TAQUILLA DE PREMIOS</p>
-            <p className="mt-1 text-sm text-cream/70">36 cupones listos para causar problemas · elige tu destino 🎟️</p>
+            <p className="mt-1 text-sm text-cream/70">{AVAILABLE_COUPONS.length} cupones disponibles · {COUPONS.length - AVAILABLE_COUPONS.length} ya redimido 🎟️</p>
           </div>
           <span className="rounded-full bg-[#ff2f7d]/25 px-3 py-1.5 text-xs font-bold text-[#ffd21f]">NO HAY DEVOLUCIONES 🎟️</span>
         </div>
@@ -193,8 +201,11 @@ export default function CouponsRoulette() {
                 <p className="mb-2 text-xs font-bold tracking-wide text-[#70e1d1] uppercase">{category}</p>
                 <ul className="space-y-1.5 text-sm text-cream/75">
                   {COUPONS.filter((coupon) => coupon.category === category).map((coupon) => (
-                    <li key={coupon.id}>
-                      {coupon.emoji} {coupon.title}
+                    <li
+                      key={coupon.id}
+                      className={coupon.redeemed ? "text-cream/40 line-through decoration-2 decoration-[#ff2f7d]" : ""}
+                    >
+                      {coupon.emoji} {coupon.title}{coupon.redeemed ? " · REDIMIDO" : ""}
                     </li>
                   ))}
                 </ul>
